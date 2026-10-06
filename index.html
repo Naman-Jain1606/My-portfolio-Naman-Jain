@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Naman Jain | Personal Portfolio • B.Tech CSE JECRC University</title>
+  <meta name="description" content="Portfolio of Naman Jain - 1st Year B.Tech Computer Science & Engineering student at JECRC University. Passionate about learning programming, web development, and problem solving.">
+  <meta name="keywords" content="Naman Jain, JECRC University, B.Tech CSE, Portfolio, Student Developer, Web Development, Avengers Portfolio">
+  <meta name="author" content="Naman Jain">
+
+  <!-- Favicon / Marvel Arc Logo -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23080c16' stroke='%2300f3ff' stroke-width='6'/><circle cx='50' cy='50' r='20' fill='%2300f3ff'/><polygon points='50,15 60,35 85,38 67,55 72,80 50,68 28,80 33,55 15,38 40,35' fill='%23ffb703'/></svg>">
+
+  <!-- Google Fonts: Orbitron (Marvel Sci-Fi HUD) & Outfit (Modern Clean Body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome 6.5.1 CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-hero-theme="all">
+
+  <!-- =========================================================================
+       DYNAMIC AVENGERS BACKGROUND CANVAS & STARK GRID
+       ========================================================================= -->
+  <canvas id="avengers-bg-canvas"></canvas>
+  <div class="stark-grid-overlay"></div>
+  <div class="ambient-hero-glow top-right"></div>
+  <div class="ambient-hero-glow bottom-left"></div>
+
+  <!-- Subtle Avengers Holographic Crest Watermark -->
+  <svg class="avengers-watermark" viewBox="0 0 100 100" fill="currentColor">
+    <path d="M50 5 L85 90 L68 90 L56 60 L38 60 L44 45 L52 45 L48 30 L50 5 Z M20 90 L34 52 L26 52 L12 90 Z" />
+    <circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="4" stroke-dasharray="10 5" />
+  </svg>
+
+  <!-- =========================================================================
+       FULLSCREEN CINEMATIC AVENGERS PAGE TRANSITIONS
+       ========================================================================= -->
+  <div id="avengers-transition-portal" aria-hidden="true">
+    <!-- 1. Iron Man Repulsor Flash (Home) -->
+    <div class="fx-ironman-layer">
+      <div style="width: 200px; height: 200px; border-radius: 50%; border: 6px solid #ffb703; box-shadow: 0 0 80px #ff3344; display: flex; align-items: center; justify-content: center;">
+        <i class="fa-solid fa-bolt" style="font-size: 5rem; color: #fff;"></i>
+      </div>
+    </div>
+
+    <!-- 2. Captain America Vibranium Shield Ripple (About) -->
+    <div class="fx-cap-layer">
+      <div class="cap-shield-spin">
+        <div style="position: absolute; inset: 20px; border-radius: 50%; border: 12px solid #e2e8f0;"></div>
+        <div style="position: absolute; inset: 44px; border-radius: 50%; border: 12px solid #dc2626;"></div>
+        <div style="position: absolute; inset: 68px; border-radius: 50%; background: #2563eb; display:flex; align-items:center; justify-content:center; color:#fff; font-size:3rem;">
+          <i class="fa-solid fa-star"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Doctor Strange Mystic Portal Sparks (Education) -->
+    <div class="fx-strange-layer">
+      <div class="mystic-portal-ring"></div>
+    </div>
+
+    <!-- 4. Thor Thunder & Lightning Flash (Skills) -->
+    <div class="fx-thor-layer">
+      <i class="fa-solid fa-cloud-bolt" style="font-size: 8rem; color: #fff; filter: drop-shadow(0 0 30px #38bdf8);"></i>
+    </div>
+
+    <!-- 5. Spider-Man Web Pull (Projects) -->
+    <div class="fx-spiderman-layer">
+      <i class="fa-solid fa-spider" style="font-size: 7rem; color: #ef4444; filter: drop-shadow(0 0 40px #ef4444);"></i>
+    </div>
+
+    <!-- 6. Black Panther Vibranium Kinetic Wave (Achievements) -->
+    <div class="fx-panther-layer">
+      <div style="width: 240px; height: 240px; border-radius: 50%; border: 8px solid #c084fc; box-shadow: 0 0 90px #a855f7; display:flex; align-items:center; justify-content:center;">
+        <i class="fa-solid fa-gem" style="font-size: 5rem; color: #fff;"></i>
+      </div>
+    </div>
+
+    <!-- 7. Avengers Assemble Holographic Beacon (Contact) -->
+    <div class="fx-avengers-layer">
+      <div style="width: 240px; height: 240px; border-radius: 50%; border: 6px solid #00f3ff; box-shadow: 0 0 80px #00f3ff; display:flex; align-items:center; justify-content:center;">
+        <span style="font-size: 6rem; font-family: var(--font-hud); font-weight: 900; color: #fff;">A</span>
+      </div>
+    </div>
+
+    <div id="portal-hero-title" class="portal-hero-title">AVENGERS ASSEMBLE</div>
+  </div>
+
+  <!-- =========================================================================
+       HEADER & NAVIGATION BAR
+       ========================================================================= -->
+  <header class="site-header">
+    <div class="header-container">
+      <!-- Brand Logo / Arc Reactor Icon -->
+      <a href="#home" class="brand-logo" onclick="navigateToSection('home'); return false;">
+        <div class="arc-logo-icon">
+          <div class="arc-pulse-ring"></div>
+          <div class="arc-inner-core"></div>
+        </div>
+        <div class="brand-meta">
+          <span class="brand-name">NAMAN JAIN</span>
+          <span class="brand-badge"><i class="fa-solid fa-shield-halved"></i> STARK TECH ARCHIVES</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation Menu -->
+      <ul class="nav-links">
+        <li><a href="#home" class="nav-link active"><i class="fa-solid fa-house"></i> Home</a></li>
+        <li><a href="#about" class="nav-link"><i class="fa-solid fa-user-astronaut"></i> About Me</a></li>
+        <li><a href="#education" class="nav-link"><i class="fa-solid fa-graduation-cap"></i> Education</a></li>
+        <li><a href="#skills" class="nav-link"><i class="fa-solid fa-bolt"></i> Skills</a></li>
+        <li><a href="#projects" class="nav-link"><i class="fa-solid fa-laptop-code"></i> Projects</a></li>
+        <li><a href="#achievements" class="nav-link"><i class="fa-solid fa-trophy"></i> Achievements</a></li>
+        <li><a href="#contact" class="nav-link"><i class="fa-solid fa-paper-plane"></i> Contact</a></li>
+      </ul>
+
+      <!-- Controls (Theme Selector & Sound FX Toggle) -->
+      <div class="header-actions">
+        <!-- Hero Theme Picker -->
+        <div class="theme-picker-wrapper">
+          <button id="theme-toggle-btn" class="control-btn" title="Switch Avengers Hero Theme">
+            <i class="fa-solid fa-mask"></i>
+            <span id="current-theme-name">Multiverse</span>
+            <i class="fa-solid fa-chevron-down" style="font-size:0.65rem;"></i>
+          </button>
+          <div id="theme-dropdown" class="theme-dropdown">
+            <button class="theme-option" data-theme="all">
+              <span class="theme-dot" style="background:#00f3ff;"></span> All Avengers
+            </button>
+            <button class="theme-option" data-theme="ironman">
+              <span class="theme-dot" style="background:#ff3344;"></span> Iron Man
+            </button>
+            <button class="theme-option" data-theme="cap">
+              <span class="theme-dot" style="background:#2563eb;"></span> Captain America
+            </button>
+            <button class="theme-option" data-theme="thor">
+              <span class="theme-dot" style="background:#38bdf8;"></span> Thor Odinson
+            </button>
+            <button class="theme-option" data-theme="strange">
+              <span class="theme-dot" style="background:#ff7700;"></span> Doctor Strange
+            </button>
+            <button class="theme-option" data-theme="spiderman">
+              <span class="theme-dot" style="background:#ef4444;"></span> Spider-Man
+            </button>
+            <button class="theme-option" data-theme="panther">
+              <span class="theme-dot" style="background:#a855f7;"></span> Black Panther
+            </button>
+          </div>
+        </div>
+
+        <!-- Audio FX Toggle Button -->
+        <button id="sound-toggle-btn" class="control-btn" title="Toggle Marvel Sound Effects">
+          <i id="sound-status-icon" class="fa-solid fa-volume-xmark"></i>
+          <span id="sound-status-label">FX: OFF</span>
+        </button>
+
+        <!-- Mobile Drawer Toggle -->
+        <button id="mobile-menu-toggle" class="mobile-nav-toggle" aria-label="Toggle Navigation Menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       MAIN SECTIONS CONTAINER
+       ========================================================================= -->
+  <main>
+
+    <!-- =====================================================================
+         1. SECTION: HOME (IRON MAN & JARVIS SYSTEM HUD)
+         ===================================================================== -->
+    <section id="home" class="portfolio-section active">
+      <div class="home-hero-container">
+        <!-- Hero Left Info -->
+        <div class="hero-text-wrap">
+          <div class="hero-status-pill">
+            <span class="pulse-dot"></span>
+            <span>J.A.R.V.I.S. PROTOCOL INITIALIZED • SYSTEM ONLINE</span>
+          </div>
+
+          <h1 class="hero-title">
+            HELLO, I'M <br>
+            <span class="gradient-text">NAMAN JAIN</span>
+          </h1>
+
+          <div class="typewriter-line">
+            <i class="fa-solid fa-terminal" style="color:var(--theme-accent); font-size:0.95rem;"></i>
+            <span id="typewriter-text" class="typewriter-target">B.Tech CSE Student</span>
+          </div>
+
+          <p class="hero-bio">
+            First-year <strong>Computer Science & Engineering</strong> student at <strong>JECRC University</strong>. 
+            I'm at the beginning of my engineering voyage — learning programming block by block, debugging with patience, and staying genuinely curious. 
+            <em>Every superhero has an origin story, and this is my Day One.</em>
+          </p>
+
+          <div class="hero-action-group">
+            <button class="btn-primary" onclick="navigateToSection('projects')">
+              <i class="fa-solid fa-rocket"></i> Explore My Work
+            </button>
+            <button class="btn-secondary" onclick="navigateToSection('about')">
+              <i class="fa-solid fa-shield-cat"></i> Origin Story
+            </button>
+            <button class="btn-secondary" onclick="navigateToSection('contact')">
+              <i class="fa-solid fa-satellite-dish"></i> Contact Me
+            </button>
+          </div>
+
+          <!-- Quick Contacts Preview -->
+          <div style="display:flex; gap:1.2rem; align-items:center; color:var(--text-muted); font-size:0.85rem; flex-wrap:wrap;">
+            <span><i class="fa-solid fa-envelope" style="color:var(--theme-accent);"></i> jainnaman1606@gmail.com</span>
+            <span><i class="fa-solid fa-phone" style="color:var(--theme-accent);"></i> +91 9875772335</span>
+            <span><i class="fa-solid fa-location-dot" style="color:var(--theme-accent);"></i> JECRC University, Jaipur</span>
+          </div>
+        </div>
+
+        <!-- Hero Right: Interactive Arc Reactor & Diagnostics HUD -->
+        <div class="hero-hud-card">
+          <div class="hud-corner-marker tl"></div>
+          <div class="hud-corner-marker tr"></div>
+          <div class="hud-corner-marker bl"></div>
+          <div class="hud-corner-marker br"></div>
+
+          <div class="reactor-interactive-wrap">
+            <div id="hero-arc-reactor" class="arc-reactor-core-large" title="Click to test Arc Reactor energy pulse!">
+              <div class="reactor-blades"></div>
+              <div class="reactor-center-gem">
+                <i class="fa-solid fa-atom"></i>
+              </div>
+            </div>
+            <h4 style="font-size:1.05rem; color:#fff; margin-bottom:0.2rem;">MARK I: ARC REACTOR</h4>
+            <p style="font-size:0.75rem; color:var(--arc-cyan); font-family:var(--font-hud);">CLICK TO TRIGGER ENERGY SURGE</p>
+          </div>
+
+          <div class="hud-specs-list">
+            <div class="hud-spec-item">
+              <span class="hud-spec-label"><i class="fa-solid fa-university"></i> INSTITUTION</span>
+              <span class="hud-spec-value">JECRC University</span>
+            </div>
+            <div class="hud-spec-item">
+              <span class="hud-spec-label"><i class="fa-solid fa-laptop-code"></i> DEGREE / YEAR</span>
+              <span class="hud-spec-value">B.Tech CSE (1st Year)</span>
+            </div>
+            <div class="hud-spec-item">
+              <span class="hud-spec-label"><i class="fa-solid fa-bullseye"></i> CURRENT FOCUS</span>
+              <span class="hud-spec-value">C++ & Web Basics</span>
+            </div>
+            <div class="hud-spec-item">
+              <span class="hud-spec-label"><i class="fa-solid fa-battery-full"></i> SUPERPOWER</span>
+              <span class="hud-spec-value">Curiosity & Humility</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         2. SECTION: ABOUT ME (CAPTAIN AMERICA & HUMBLE ROOKIE VOYAGE)
+         ===================================================================== -->
+    <section id="about" class="portfolio-section">
+      <div class="section-header">
+        <span class="section-hero-tag"><i class="fa-solid fa-shield"></i> Captain America Protocol</span>
+        <h2 class="section-title">Origin Story & About Me</h2>
+        <p class="section-subtitle">
+          "I can do this all day." — Continuous perseverance and staying humble in the quest for knowledge.
+        </p>
+      </div>
+
+      <div class="about-grid">
+        <!-- Left: Vibranium Shield Crest -->
+        <div class="about-shield-frame">
+          <div class="shield-graphic-wrap">
+            <div class="shield-ring-outer"></div>
+            <div class="shield-ring-mid"></div>
+            <div class="shield-ring-inner"></div>
+            <div class="shield-star-center">
+              <i class="fa-solid fa-star"></i>
+            </div>
+          </div>
+
+          <h3 style="font-size:1.3rem; color:#fff; margin-bottom:0.5rem;">NAMAN JAIN</h3>
+          <p style="font-size:0.85rem; color:var(--cap-blue); font-family:var(--font-hud); margin-bottom:1.2rem;">
+            ASPIRING CSE ENGINEER • LEVEL 1 EXPLORER
+          </p>
+
+          <div class="about-quote-box">
+            "I'm learning things step-by-step and I'm not perfect in everything — but I have the grit to improve with every single line of code."
+          </div>
+        </div>
+
+        <!-- Right: Honest Story & Engineering Mindset -->
+        <div class="about-content-card">
+          <span class="origin-badge"><i class="fa-solid fa-compass"></i> THE JOURNEY SO FAR</span>
+          <h3 class="about-lead-text">
+            Building Strong Foundations in Computer Science at JECRC University.
+          </h3>
+          <p class="about-p">
+            I am a first-year Computer Science Engineering student based in Jaipur. Ever since taking my first steps into technology, 
+            I've been fascinated by how logic and creativity combine to create interactive software.
+          </p>
+          <p class="about-p">
+            Unlike claims of instant mastery, I believe genuine engineering takes time, honest effort, and continuous curiosity. 
+            Currently, I am strengthening my fundamentals in C/C++, exploring data structures, and practicing modern responsive web development.
+          </p>
+
+          <div class="humble-pillars-grid">
+            <div class="pillar-item">
+              <div class="pillar-icon"><i class="fa-solid fa-brain"></i></div>
+              <h4 class="pillar-title">Growth Mindset</h4>
+              <p class="pillar-desc">Open to feedback, eager to learn new languages and tools without hesitation.</p>
+            </div>
+            <div class="pillar-item">
+              <div class="pillar-icon"><i class="fa-solid fa-bug"></i></div>
+              <h4 class="pillar-title">Debugging Grit</h4>
+              <p class="pillar-desc">Treating compiler errors not as roadblocks, but as clues pointing toward better logic.</p>
+            </div>
+            <div class="pillar-item">
+              <div class="pillar-icon"><i class="fa-solid fa-hammer"></i></div>
+              <h4 class="pillar-title">Hands-on Practice</h4>
+              <p class="pillar-desc">Learning through building mini-projects, console utilities, and web interfaces.</p>
+            </div>
+            <div class="pillar-item">
+              <div class="pillar-icon"><i class="fa-solid fa-people-group"></i></div>
+              <h4 class="pillar-title">Collaborative Spirit</h4>
+              <p class="pillar-desc">Inspired by team dynamics, ready to contribute and learn from peers and mentors.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         3. SECTION: EDUCATION (DOCTOR STRANGE MYSTIC TIME STONE)
+         ===================================================================== -->
+    <section id="education" class="portfolio-section">
+      <div class="section-header">
+        <span class="section-hero-tag"><i class="fa-solid fa-hat-wizard"></i> Doctor Strange Protocol</span>
+        <h2 class="section-title">Academic Journey & Foundation</h2>
+        <p class="section-subtitle">
+          "Dormammu, I've come to learn." — Forging strong mathematical, logical, and computational discipline.
+        </p>
+      </div>
+
+      <div class="education-timeline">
+        <!-- Item 1: JECRC University -->
+        <div class="timeline-item">
+          <div class="timeline-glyph">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </div>
+          <div class="timeline-card">
+            <div class="timeline-header">
+              <h3 class="timeline-title">Bachelor of Technology (B.Tech) - Computer Science & Engineering</h3>
+              <span class="timeline-badge">2026 - 2030 • 1st Year (Current)</span>
+            </div>
+            <div class="timeline-sub"><i class="fa-solid fa-building-columns"></i> JECRC University, Jaipur, Rajasthan</div>
+            <p class="timeline-desc">
+              Currently pursuing undergraduate studies in Computer Science and Engineering. Focusing on understanding programming fundamentals, computational thinking, mathematical algorithms, and hardware-software abstractions.
+            </p>
+            <div class="coursework-tags">
+              <span class="course-tag">Programming in C/C++</span>
+              <span class="course-tag">Engineering Mathematics</span>
+              <span class="course-tag">Digital Electronics & Logic</span>
+              <span class="course-tag">Computer Fundamentals</span>
+              <span class="course-tag">Web Technologies (Self-Study)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 2: Senior Secondary (XII) -->
+        <div class="timeline-item">
+          <div class="timeline-glyph">
+            <i class="fa-solid fa-school"></i>
+          </div>
+          <div class="timeline-card">
+            <div class="timeline-header">
+              <h3 class="timeline-title">Senior Secondary Education (Class XII)</h3>
+              <span class="timeline-badge">Science & Mathematics (PCM)</span>
+            </div>
+            <div class="timeline-sub"><i class="fa-solid fa-book-open"></i> Central Board of Secondary Education (CBSE)</div>
+            <p class="timeline-desc">
+              Completed senior secondary education with Physics, Chemistry, and Mathematics. Built a rigorous foundation in quantitative problem solving, analytical thinking, and scientific inquiry.
+            </p>
+            <div class="coursework-tags">
+              <span class="course-tag">Physics</span>
+              <span class="course-tag">Mathematics & Calculus</span>
+              <span class="course-tag">Chemistry</span>
+              <span class="course-tag">English Core</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 3: Secondary School (X) -->
+        <div class="timeline-item">
+          <div class="timeline-glyph">
+            <i class="fa-solid fa-certificate"></i>
+          </div>
+          <div class="timeline-card">
+            <div class="timeline-header">
+              <h3 class="timeline-title">Secondary School Examination (Class X)</h3>
+              <span class="timeline-badge">Foundational Academics</span>
+            </div>
+            <div class="timeline-sub"><i class="fa-solid fa-award"></i> Secondary School Board</div>
+            <p class="timeline-desc">
+              Developed consistent academic discipline, co-curricular teamwork, and a strong curiosity for computing and technology.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         4. SECTION: SKILLS (THOR ODINSON & STORMBREAKER FORGE)
+         ===================================================================== -->
+    <section id="skills" class="portfolio-section">
+      <div class="section-header">
+        <span class="section-hero-tag"><i class="fa-solid fa-bolt"></i> Thor Odinson Protocol</span>
+        <h2 class="section-title">The Forge // Technical Skills</h2>
+        <p class="section-subtitle">
+          "Whosoever holds this hammer..." — The languages, technologies, and developer tools I am forging.
+        </p>
+      </div>
+
+      <div class="skills-container">
+        <!-- Category 1: Programming Languages -->
+        <div class="skill-category-card">
+          <div class="category-header">
+            <div class="cat-icon-wrap"><i class="fa-solid fa-code"></i></div>
+            <h3 class="cat-title">Programming Languages</h3>
+          </div>
+
+          <div class="skill-items-list">
+            <div class="skill-item">
+              <div class="skill-meta">
+                <span class="skill-name"><i class="fa-brands fa-c"></i> C++</span>
+                <span class="skill-status-tag">Core Focus • Learning</span>
+              </div>
+              <div class="skill-bar-outer"><div class="skill-bar-fill" style="width: 70%;"></div></div>
+            </div>
+
+            <div class="skill-item">
+              <div class="skill-meta">
+                <span class="skill-name"><i class="fa-solid fa-microchip"></i> C Language</span>
+                <span class="skill-status-tag">Fundamentals</span>
+              </div>
+              <div class="skill-bar-outer"><div class="skill-bar-fill" style="width: 65%;"></div></div>
+            </div>
+
+            <div class="skill-item">
+              <div class="skill-meta">
+                <span class="skill-name"><i class="fa-brands fa-js"></i> JavaScript (ES6+)</span>
+                <span class="skill-status-tag">Practicing</span>
+              </div>
+              <div class="skill-bar-outer"><div class="skill-bar-fill" style="width: 60%;"></div></div>
+            </div>
+
+            <div class="skill-item">
+              <div class="skill-meta">
+                <span class="skill-name"><i class="fa-brands fa-python"></i> Python</span>
+                <span class="skill-status-tag">Syntax Basics</span>
+              </div>
+              <div class="skill-bar-outer"><div class="skill-bar-fill" style="width: 45%;"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Category 2: Web Development -->
+        <div class="skill-category-card">
+          <div class="category-header">
+            <div class="cat-icon-wrap"><i class="fa-solid fa-globe"></i></div>
+            <h3 class="cat-title">Frontend & Web Tech</h3>
+          </div>
+
+          <div class="skill-items-list">
+            <div class="skill-item">
+              <div class="skill-meta">
+                <span class="skill-name"><i class="fa-brands fa-html5"></i> HTML5 & Semantic Web</span>
+                <span class="skill-status-tag">Strong Base</span>
+              </div>
+              <div class="skill-bar-outer"><div class="skill-bar-fill" style="width: 85%;"></div></div>
+            </div>
+
+            <div class="skill-item">
+              <div class="skill-meta">
+                <span class="skill-name"><i class="fa-brands fa-css3-alt"></i> CSS3 & Responsive Design</span>
+                <span class="skill-status-tag">Flexbox & Grid</span>
+              </div>
+              <div class="skill-bar-outer"><div class="skill-bar-fill" style="width: 78%;"></div></div>
+            </div>
+
+            <div class="skill-item">
+              <div class="skill-meta">
+                <span class="skill-name"><i class="fa-solid fa-wand-magic-sparkles"></i> CSS Animations & Canvas</span>
+                <span class="skill-status-tag">Interactive</span>
+              </div>
+              <div class="skill-bar-outer"><div class="skill-bar-fill" style="width: 60%;"></div></div>
+            </div>
+
+            <div class="skill-item">
+              <div class="skill-meta">
+                <span class="skill-name"><i class="fa-solid fa-code-fork"></i> DOM Manipulation</span>
+                <span class="skill-status-tag">Event Handling</span>
+              </div>
+              <div class="skill-bar-outer"><div class="skill-bar-fill" style="width: 68%;"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Category 3: Tools & Computer Science -->
+        <div class="skill-category-card">
+          <div class="category-header">
+            <div class="cat-icon-wrap"><i class="fa-solid fa-toolbox"></i></div>
+            <h3 class="cat-title">Tools & Fundamentals</h3>
+          </div>
+
+          <div class="skill-chips-cloud">
+            <span class="skill-chip"><i class="fa-brands fa-git-alt"></i> Git Version Control</span>
+            <span class="skill-chip"><i class="fa-brands fa-github"></i> GitHub</span>
+            <span class="skill-chip"><i class="fa-solid fa-terminal"></i> VS Code</span>
+            <span class="skill-chip"><i class="fa-solid fa-sitemap"></i> Data Structures (Arrays, Strings)</span>
+            <span class="skill-chip"><i class="fa-solid fa-cube"></i> OOP Concepts</span>
+            <span class="skill-chip"><i class="fa-solid fa-magnifying-glass"></i> Problem Solving</span>
+            <span class="skill-chip"><i class="fa-solid fa-browser"></i> Chrome DevTools</span>
+            <span class="skill-chip"><i class="fa-solid fa-heart"></i> Eagerness to Learn</span>
+          </div>
+
+          <div style="margin-top:1.8rem; background:rgba(255,255,255,0.02); padding:1rem; border-radius:10px; border-left:3px solid var(--thor-lightning);">
+            <p style="font-size:0.82rem; color:var(--text-muted); line-height:1.5;">
+              <strong style="color:#fff;">Learning Note:</strong> I don't claim mastery yet. My daily routine involves solving 2-3 algorithmic problems and practicing clean code.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         5. SECTION: PROJECTS (SPIDER-MAN & STARK TECH LAB)
+         ===================================================================== -->
+    <section id="projects" class="portfolio-section">
+      <div class="section-header">
+        <span class="section-hero-tag"><i class="fa-solid fa-spider"></i> Spider-Man Protocol</span>
+        <h2 class="section-title">Stark Tech Lab // Projects</h2>
+        <p class="section-subtitle">
+          "With great power comes great responsibility." — Projects and prototypes built along my learning journey.
+        </p>
+      </div>
+
+      <!-- Projects Category Filter -->
+      <div class="projects-filter-bar">
+        <button class="filter-btn active" data-filter="all">All Projects</button>
+        <button class="filter-btn" data-filter="web">Web & Frontend</button>
+        <button class="filter-btn" data-filter="first-year">1st Year / C++</button>
+        <button class="filter-btn" data-filter="interactive">Interactive / Marvel</button>
+      </div>
+
+      <div class="projects-grid">
+        <!-- Project 1: Avengers Quiz Arena -->
+        <div class="project-card" data-category="web interactive">
+          <div class="project-preview-head">
+            <span class="project-badge-type">Interactive Web App</span>
+            <i class="fa-solid fa-shield-halved project-illustration-icon"></i>
+          </div>
+          <div class="project-body">
+            <h3 class="project-title">Avengers Multiverse Tech Quiz</h3>
+            <p class="project-desc">
+              An engaging quiz application testing Marvel superhero lore, Tony Stark inventions, and CS trivia with dynamic scoring and celebratory sound effects.
+            </p>
+            <div class="learning-takeaway-box">
+              <strong>What I Learned:</strong> JavaScript DOM manipulation, Web Audio API integration, and conditional animations.
+            </div>
+            <div class="project-stack-tags">
+              <span class="stack-tag">HTML5</span>
+              <span class="stack-tag">CSS3</span>
+              <span class="stack-tag">JavaScript</span>
+              <span class="stack-tag">Web Audio API</span>
+            </div>
+            <div class="project-footer-links">
+              <button class="project-link-btn demo" onclick="openProjectModal('quiz')">
+                <i class="fa-solid fa-play"></i> Interactive Demo
+              </button>
+              <a href="https://github.com/namanjain1606" target="_blank" class="project-link-btn code">
+                <i class="fa-brands fa-github"></i> Source
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 2: JECRC SGPA / CGPA Calculator -->
+        <div class="project-card" data-category="web first-year">
+          <div class="project-preview-head">
+            <span class="project-badge-type">University Utility</span>
+            <i class="fa-solid fa-calculator project-illustration-icon"></i>
+          </div>
+          <div class="project-body">
+            <h3 class="project-title">JECRC University SGPA Calculator</h3>
+            <p class="project-desc">
+              A responsive grade evaluation tool built specifically for college peers to calculate semester SGPA and predict cumulative GPA based on subject credits.
+            </p>
+            <div class="learning-takeaway-box">
+              <strong>What I Learned:</strong> Form inputs processing, floating-point math validation, and clean layout UX.
+            </div>
+            <div class="project-stack-tags">
+              <span class="stack-tag">JavaScript</span>
+              <span class="stack-tag">CSS Flexbox</span>
+              <span class="stack-tag">Math Parsing</span>
+            </div>
+            <div class="project-footer-links">
+              <button class="project-link-btn demo" onclick="openProjectModal('cgpa')">
+                <i class="fa-solid fa-play"></i> Try Calculator
+              </button>
+              <a href="https://github.com/namanjain1606" target="_blank" class="project-link-btn code">
+                <i class="fa-brands fa-github"></i> Source
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 3: C++ Student Management System -->
+        <div class="project-card" data-category="first-year">
+          <div class="project-preview-head">
+            <span class="project-badge-type">C++ Console Application</span>
+            <i class="fa-solid fa-terminal project-illustration-icon"></i>
+          </div>
+          <div class="project-body">
+            <h3 class="project-title">C++ Student Records System</h3>
+            <p class="project-desc">
+              Menu-driven console application implementing Object-Oriented Programming (OOP) in C++ to manage, search, modify, and persist student academic data using file streams.
+            </p>
+            <div class="learning-takeaway-box">
+              <strong>What I Learned:</strong> C++ Classes, Constructors, File Handling (`fstream`), and Struct Data Architecture.
+            </div>
+            <div class="project-stack-tags">
+              <span class="stack-tag">C++</span>
+              <span class="stack-tag">OOP</span>
+              <span class="stack-tag">File Handling</span>
+              <span class="stack-tag">Algorithms</span>
+            </div>
+            <div class="project-footer-links">
+              <button class="project-link-btn demo" onclick="openProjectModal('cppmgmt')">
+                <i class="fa-solid fa-circle-info"></i> Project Details
+              </button>
+              <a href="https://github.com/namanjain1606" target="_blank" class="project-link-btn code">
+                <i class="fa-brands fa-github"></i> GitHub
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 4: Sorting Algorithm Visualizer -->
+        <div class="project-card" data-category="web first-year interactive">
+          <div class="project-preview-head">
+            <span class="project-badge-type">DSA Visual Tool</span>
+            <i class="fa-solid fa-chart-simple project-illustration-icon"></i>
+          </div>
+          <div class="project-body">
+            <h3 class="project-title">Interactive Sorting Visualizer</h3>
+            <p class="project-desc">
+              Visualizes step-by-step element swapping for Bubble Sort and Selection Sort with color pointers to help beginners grasp how sorting algorithms operate.
+            </p>
+            <div class="learning-takeaway-box">
+              <strong>What I Learned:</strong> Async time delays (`Promise`), array rendering, and time complexity differences.
+            </div>
+            <div class="project-stack-tags">
+              <span class="stack-tag">JavaScript</span>
+              <span class="stack-tag">CSS Keyframes</span>
+              <span class="stack-tag">Algorithms</span>
+            </div>
+            <div class="project-footer-links">
+              <button class="project-link-btn demo" onclick="openProjectModal('sorting')">
+                <i class="fa-solid fa-circle-info"></i> View Details
+              </button>
+              <a href="https://github.com/namanjain1606" target="_blank" class="project-link-btn code">
+                <i class="fa-brands fa-github"></i> GitHub
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 5: Avengers Personal Portfolio -->
+        <div class="project-card" data-category="web interactive">
+          <div class="project-preview-head">
+            <span class="project-badge-type">Featured Portfolio</span>
+            <i class="fa-solid fa-atom project-illustration-icon"></i>
+          </div>
+          <div class="project-body">
+            <h3 class="project-title">Stark Tech Portfolio (This Site)</h3>
+            <p class="project-desc">
+              Custom-built personal developer portfolio with Avengers page transitions, procedural audio synthesis, floating Marvel canvas particles, and 7 hero color themes.
+            </p>
+            <div class="learning-takeaway-box">
+              <strong>What I Learned:</strong> Advanced CSS Architecture, Canvas rendering, Web Audio synthesis, and semantic design.
+            </div>
+            <div class="project-stack-tags">
+              <span class="stack-tag">HTML5</span>
+              <span class="stack-tag">CSS3</span>
+              <span class="stack-tag">JavaScript</span>
+              <span class="stack-tag">Canvas</span>
+            </div>
+            <div class="project-footer-links">
+              <button class="project-link-btn demo" onclick="openProjectModal('portfolio')">
+                <i class="fa-solid fa-star"></i> Architecture
+              </button>
+              <a href="https://github.com/namanjain1606" target="_blank" class="project-link-btn code">
+                <i class="fa-brands fa-github"></i> Repository
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 6: Daily Study & Assignment Tracker -->
+        <div class="project-card" data-category="web first-year">
+          <div class="project-preview-head">
+            <span class="project-badge-type">Productivity App</span>
+            <i class="fa-solid fa-list-check project-illustration-icon"></i>
+          </div>
+          <div class="project-body">
+            <h3 class="project-title">Daily Study & Task Tracker</h3>
+            <p class="project-desc">
+              Minimalist task manager created to log college assignments, coding problem milestones, and daily study streaks with local browser persistence.
+            </p>
+            <div class="learning-takeaway-box">
+              <strong>What I Learned:</strong> Browser LocalStorage, CRUD operations in vanilla JS, and state synchronization.
+            </div>
+            <div class="project-stack-tags">
+              <span class="stack-tag">LocalStorage</span>
+              <span class="stack-tag">JavaScript</span>
+              <span class="stack-tag">CSS Cards</span>
+            </div>
+            <div class="project-footer-links">
+              <button class="project-link-btn demo" onclick="openProjectModal('tasktracker')">
+                <i class="fa-solid fa-circle-info"></i> View Details
+              </button>
+              <a href="https://github.com/namanjain1606" target="_blank" class="project-link-btn code">
+                <i class="fa-brands fa-github"></i> GitHub
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         6. SECTION: CERTIFICATIONS & ACHIEVEMENTS (BLACK PANTHER & INFINITY GAUNTLET)
+         ===================================================================== -->
+    <section id="achievements" class="portfolio-section">
+      <div class="section-header">
+        <span class="section-hero-tag"><i class="fa-solid fa-gem"></i> Black Panther & Infinity Stones</span>
+        <h2 class="section-title">Certifications & Milestones</h2>
+        <p class="section-subtitle">
+          "Wakanda Forever!" — The Infinity Stones of knowledge unlocked and ongoing milestones.
+        </p>
+      </div>
+
+      <!-- Interactive Infinity Stones Banner -->
+      <div class="infinity-stones-banner" title="Click an Infinity Stone to reveal its superpower!">
+        <div class="infinity-stone-gem stone-space" title="Space Stone"><i class="fa-solid fa-satellite"></i></div>
+        <div class="infinity-stone-gem stone-mind" title="Mind Stone"><i class="fa-solid fa-brain"></i></div>
+        <div class="infinity-stone-gem stone-reality" title="Reality Stone"><i class="fa-solid fa-wand-magic"></i></div>
+        <div class="infinity-stone-gem stone-power" title="Power Stone"><i class="fa-solid fa-fire"></i></div>
+        <div class="infinity-stone-gem stone-time" title="Time Stone"><i class="fa-solid fa-clock"></i></div>
+        <div class="infinity-stone-gem stone-soul" title="Soul Stone"><i class="fa-solid fa-heart"></i></div>
+      </div>
+
+      <div class="achievements-grid">
+        <!-- Card 1 -->
+        <div class="achievement-card">
+          <div class="achieve-badge-icon"><i class="fa-solid fa-code"></i></div>
+          <h3 class="achieve-title">C++ Programming Fundamentals</h3>
+          <div class="achieve-issuer">Foundational Coursework</div>
+          <p class="achieve-desc">
+            Certified completion of fundamental programming principles covering syntax, conditional branching, loops, functions, arrays, and basic algorithmic problem solving.
+          </p>
+          <span class="achieve-status-badge"><i class="fa-solid fa-circle-check" style="color:#10b981;"></i> Completed</span>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="achievement-card">
+          <div class="achieve-badge-icon"><i class="fa-brands fa-html5"></i></div>
+          <h3 class="achieve-title">Responsive Web Design & Modern CSS</h3>
+          <div class="achieve-issuer">FreeCodeCamp / Online Learning</div>
+          <p class="achieve-desc">
+            Mastered modern CSS layouts including Flexbox, CSS Grid, media queries, mobile-first design, accessibility basics, and semantic HTML5 structuring.
+          </p>
+          <span class="achieve-status-badge"><i class="fa-solid fa-circle-check" style="color:#10b981;"></i> Completed</span>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="achievement-card">
+          <div class="achieve-badge-icon"><i class="fa-brands fa-git-alt"></i></div>
+          <h3 class="achieve-title">Git & GitHub Essentials</h3>
+          <div class="achieve-issuer">Version Control Milestone</div>
+          <p class="achieve-desc">
+            Hands-on practice with version control workflows: initializing repositories, branch management, committing changes, resolving conflicts, and collaborating via GitHub.
+          </p>
+          <span class="achieve-status-badge"><i class="fa-solid fa-circle-check" style="color:#10b981;"></i> Practicing Daily</span>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="achievement-card">
+          <div class="achieve-badge-icon"><i class="fa-solid fa-medal"></i></div>
+          <h3 class="achieve-title">Problem Solving & Coding Badges</h3>
+          <div class="achieve-issuer">HackerRank & LeetCode</div>
+          <p class="achieve-desc">
+            Earned problem-solving badges solving beginner and intermediate challenges in C++ data structures, math logic, and string manipulation.
+          </p>
+          <span class="achieve-status-badge"><i class="fa-solid fa-spinner fa-spin" style="color:var(--thor-lightning);"></i> In Active Progress</span>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="achievement-card">
+          <div class="achieve-badge-icon"><i class="fa-solid fa-users-gear"></i></div>
+          <h3 class="achieve-title">JECRC Technical Events & Workshops</h3>
+          <div class="achieve-issuer">JECRC University Clubs</div>
+          <p class="achieve-desc">
+            Active participant in college workshops on web technologies, competitive programming bootcamps, and developer community sessions.
+          </p>
+          <span class="achieve-status-badge"><i class="fa-solid fa-star" style="color:#facc15;"></i> Active Member</span>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="achievement-card">
+          <div class="achieve-badge-icon"><i class="fa-solid fa-laptop-file"></i></div>
+          <h3 class="achieve-title">100 Days of Code Pledge</h3>
+          <div class="achieve-issuer">Self-Driven Milestone</div>
+          <p class="achieve-desc">
+            Commitment to coding consistently every day, documenting progress, writing clean code, and leveling up technical skills throughout the first year of B.Tech.
+          </p>
+          <span class="achieve-status-badge"><i class="fa-solid fa-fire" style="color:#ff3344;"></i> Ongoing Journey</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         7. SECTION: CONTACT (AVENGERS ASSEMBLE TRANSMISSION & QUINJET COMMS)
+         ===================================================================== -->
+    <section id="contact" class="portfolio-section">
+      <div class="section-header">
+        <span class="section-hero-tag"><i class="fa-solid fa-satellite-dish"></i> Avengers Assemble Protocol</span>
+        <h2 class="section-title">Quinjet Comms // Contact Me</h2>
+        <p class="section-subtitle">
+          "Avengers... Assemble!" — Feel free to reach out for collaborations, advice, or a friendly chat about tech & Marvel.
+        </p>
+      </div>
+
+      <div class="contact-container">
+        <!-- Direct Contact Channels -->
+        <div class="contact-meta-card">
+          <div>
+            <h3 style="font-size:1.4rem; color:#fff; margin-bottom:0.5rem;">Transmission Hub</h3>
+            <p style="color:var(--text-muted); font-size:0.92rem; line-height:1.6;">
+              Whether you have guidance for a 1st year student, want to discuss a project, or just say hi — my communication frequency is always open!
+            </p>
+          </div>
+
+          <div class="contact-channels-list">
+            <!-- Email -->
+            <div class="channel-item">
+              <div class="channel-icon"><i class="fa-solid fa-envelope"></i></div>
+              <div class="channel-info">
+                <span class="channel-label">Email Frequency</span>
+                <a href="mailto:jainnaman1606@gmail.com" class="channel-value">jainnaman1606@gmail.com</a>
+              </div>
+              <button class="channel-action-btn" onclick="copyToClipboard('jainnaman1606@gmail.com', '📧 Email copied to clipboard!')" title="Copy Email">
+                <i class="fa-regular fa-copy"></i> Copy
+              </button>
+            </div>
+
+            <!-- Phone -->
+            <div class="channel-item">
+              <div class="channel-icon"><i class="fa-solid fa-phone"></i></div>
+              <div class="channel-info">
+                <span class="channel-label">Direct Comms</span>
+                <a href="tel:9875772335" class="channel-value">+91 9875772335</a>
+              </div>
+              <button class="channel-action-btn" onclick="copyToClipboard('9875772335', '📞 Phone number copied!')" title="Copy Phone Number">
+                <i class="fa-regular fa-copy"></i> Copy
+              </button>
+            </div>
+
+            <!-- WhatsApp Direct Link -->
+            <div class="channel-item">
+              <div class="channel-icon" style="color:#25d366; background:rgba(37, 211, 102, 0.1);"><i class="fa-brands fa-whatsapp"></i></div>
+              <div class="channel-info">
+                <span class="channel-label">Instant Messaging</span>
+                <span class="channel-value">WhatsApp Chat</span>
+              </div>
+              <a href="https://wa.me/919875772335" target="_blank" class="channel-action-btn" style="text-decoration:none;" title="Open WhatsApp">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Chat
+              </a>
+            </div>
+
+            <!-- Location -->
+            <div class="channel-item">
+              <div class="channel-icon"><i class="fa-solid fa-location-dot"></i></div>
+              <div class="channel-info">
+                <span class="channel-label">Base Coordinates</span>
+                <span class="channel-value">JECRC University, Jaipur, Rajasthan, India</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Transmission Form -->
+        <div class="transmission-form-card">
+          <h3 style="font-size:1.3rem; color:#fff; margin-bottom:0.4rem;">Send a Transmission</h3>
+          <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1.5rem;">
+            Transmits directly via J.A.R.V.I.S. protocol to Naman Jain's inbox.
+          </p>
+
+          <form id="transmission-form">
+            <div class="form-group">
+              <label for="sender-name" class="form-label"><i class="fa-solid fa-user"></i> Your Name / Codename</label>
+              <input type="text" id="sender-name" class="form-input" placeholder="e.g. Tony Stark / Senior Developer" required>
+            </div>
+
+            <div class="form-group">
+              <label for="sender-email" class="form-label"><i class="fa-solid fa-envelope"></i> Your Email Address</label>
+              <input type="email" id="sender-email" class="form-input" placeholder="you@domain.com" required>
+            </div>
+
+            <div class="form-group">
+              <label for="sender-message" class="form-label"><i class="fa-solid fa-message"></i> Transmission Message</label>
+              <textarea id="sender-message" class="form-textarea" placeholder="Hello Naman, let's connect or discuss a project..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn-primary" style="width:100%; justify-content:center; padding:0.9rem;">
+              <i class="fa-solid fa-paper-plane"></i> Transmit Message
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =========================================================================
+       FLOATING AVENGERS HERO DOCK (QUICK JUMP BAR)
+       ========================================================================= -->
+  <aside class="floating-hero-dock" aria-label="Quick Navigation Dock">
+    <button class="dock-btn active" data-target="home" data-tooltip="Iron Man (Home)">
+      <i class="fa-solid fa-house"></i>
+    </button>
+    <button class="dock-btn" data-target="about" data-tooltip="Cap Shield (About)">
+      <i class="fa-solid fa-shield"></i>
+    </button>
+    <button class="dock-btn" data-target="education" data-tooltip="Dr Strange (Education)">
+      <i class="fa-solid fa-graduation-cap"></i>
+    </button>
+    <button class="dock-btn" data-target="skills" data-tooltip="Thor Hammer (Skills)">
+      <i class="fa-solid fa-bolt"></i>
+    </button>
+    <button class="dock-btn" data-target="projects" data-tooltip="Spider-Man (Projects)">
+      <i class="fa-solid fa-spider"></i>
+    </button>
+    <button class="dock-btn" data-target="achievements" data-tooltip="Wakanda (Milestones)">
+      <i class="fa-solid fa-trophy"></i>
+    </button>
+    <button class="dock-btn" data-target="contact" data-tooltip="Avengers Comms (Contact)">
+      <i class="fa-solid fa-paper-plane"></i>
+    </button>
+  </aside>
+
+  <!-- =========================================================================
+       PROJECT INTERACTIVE MODAL
+       ========================================================================= -->
+  <div id="project-modal" class="modal-overlay" aria-hidden="true">
+    <div class="modal-box">
+      <button id="modal-close-btn" class="modal-close-btn" aria-label="Close Modal">&times;</button>
+      <div id="modal-dynamic-content">
+        <!-- Injected dynamically via script.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       SITE FOOTER
+       ========================================================================= -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-social-links">
+        <a href="mailto:jainnaman1606@gmail.com" class="social-link" title="Email Naman"><i class="fa-solid fa-envelope"></i></a>
+        <a href="tel:9875772335" class="social-link" title="Call Naman"><i class="fa-solid fa-phone"></i></a>
+        <a href="https://wa.me/919875772335" target="_blank" class="social-link" title="WhatsApp Naman"><i class="fa-brands fa-whatsapp"></i></a>
+        <a href="https://github.com/namanjain1606" target="_blank" class="social-link" title="GitHub Profile"><i class="fa-brands fa-github"></i></a>
+        <a href="https://linkedin.com" target="_blank" class="social-link" title="LinkedIn Profile"><i class="fa-brands fa-linkedin-in"></i></a>
+      </div>
+
+      <p class="footer-copy">
+        Crafted with <i class="fa-solid fa-heart" style="color:#ef4444;"></i>, Curiosity & Code by <strong>Naman Jain</strong>
+      </p>
+
+      <p class="footer-disclaimer">
+        B.Tech CSE 1st Year • JECRC University • Built with HTML5, CSS3, JavaScript, Web Audio API & Marvel Avengers Theme.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="sound-effects.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

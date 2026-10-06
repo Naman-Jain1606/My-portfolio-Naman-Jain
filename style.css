@@ -1,0 +1,2004 @@
+/* ==========================================================================
+   AVENGERS ASSEMBLE: NAMAN JAIN PORTFOLIO STYLESHEET
+   Stark Industries HUD & Avengers Universe Theming System
+   ========================================================================== */
+
+:root {
+  /* Default Multiverse Theme Variables */
+  --bg-space: #070a12;
+  --bg-card: rgba(13, 20, 36, 0.72);
+  --bg-card-hover: rgba(18, 30, 54, 0.88);
+  --border-glow: rgba(0, 243, 255, 0.25);
+  --border-active: #00f3ff;
+  --text-main: #f1f5f9;
+  --text-muted: #94a3b8;
+  --text-accent: #00f3ff;
+
+  /* Hero Signature Colors */
+  --iron-red: #ff3344;
+  --iron-gold: #ffb703;
+  --arc-cyan: #00f3ff;
+  --cap-blue: #2563eb;
+  --cap-silver: #e2e8f0;
+  --thor-lightning: #38bdf8;
+  --thor-gold: #facc15;
+  --strange-orange: #ff7700;
+  --strange-amber: #f59e0b;
+  --strange-green: #10b981; /* Time Stone */
+  --spidey-red: #ef4444;
+  --spidey-blue: #3b82f6;
+  --panther-violet: #a855f7;
+  --panther-glow: #c084fc;
+
+  /* Current Active Accent Glow (Dynamic via Theme Switcher) */
+  --theme-accent: var(--arc-cyan);
+  --theme-glow: rgba(0, 243, 255, 0.4);
+  --theme-gradient: linear-gradient(135deg, #00f3ff 0%, #3b82f6 50%, #e63946 100%);
+
+  /* Typography */
+  --font-hud: 'Orbitron', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --transition-fast: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ==========================================================================
+   DYNAMIC HERO THEMES
+   ========================================================================== */
+[data-hero-theme="ironman"] {
+  --theme-accent: var(--iron-gold);
+  --theme-glow: rgba(255, 183, 3, 0.5);
+  --theme-gradient: linear-gradient(135deg, #ff3344 0%, #ffb703 100%);
+  --border-glow: rgba(255, 51, 68, 0.35);
+  --border-active: #ffb703;
+}
+
+[data-hero-theme="cap"] {
+  --theme-accent: #60a5fa;
+  --theme-glow: rgba(37, 99, 235, 0.5);
+  --theme-gradient: linear-gradient(135deg, #2563eb 0%, #e2e8f0 50%, #dc2626 100%);
+  --border-glow: rgba(37, 99, 235, 0.4);
+  --border-active: #60a5fa;
+}
+
+[data-hero-theme="thor"] {
+  --theme-accent: var(--thor-lightning);
+  --theme-glow: rgba(56, 189, 248, 0.6);
+  --theme-gradient: linear-gradient(135deg, #38bdf8 0%, #facc15 100%);
+  --border-glow: rgba(56, 189, 248, 0.4);
+  --border-active: #38bdf8;
+}
+
+[data-hero-theme="strange"] {
+  --theme-accent: var(--strange-orange);
+  --theme-glow: rgba(255, 119, 0, 0.55);
+  --theme-gradient: linear-gradient(135deg, #ff7700 0%, #f59e0b 60%, #10b981 100%);
+  --border-glow: rgba(245, 158, 11, 0.4);
+  --border-active: #ff7700;
+}
+
+[data-hero-theme="spiderman"] {
+  --theme-accent: var(--spidey-red);
+  --theme-glow: rgba(239, 68, 68, 0.5);
+  --theme-gradient: linear-gradient(135deg, #ef4444 0%, #3b82f6 100%);
+  --border-glow: rgba(239, 68, 68, 0.35);
+  --border-active: #ef4444;
+}
+
+[data-hero-theme="panther"] {
+  --theme-accent: var(--panther-violet);
+  --theme-glow: rgba(168, 85, 247, 0.55);
+  --theme-gradient: linear-gradient(135deg, #9333ea 0%, #c084fc 100%);
+  --border-glow: rgba(168, 85, 247, 0.4);
+  --border-active: #c084fc;
+}
+
+/* ==========================================================================
+   RESET & BASE STYLES
+   ========================================================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  background-color: var(--bg-space);
+  color: var(--text-main);
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-space);
+  color: var(--text-main);
+  overflow-x: hidden;
+  line-height: 1.6;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 9px;
+}
+::-webkit-scrollbar-track {
+  background: #080c16;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+  border: 1px solid var(--theme-accent);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--theme-accent);
+}
+
+/* Selection Highlight */
+::selection {
+  background: var(--theme-accent);
+  color: #000;
+}
+
+/* Typography Helpers */
+h1, h2, h3, h4, .font-hud {
+  font-family: var(--font-hud);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* ==========================================================================
+   DYNAMIC AVENGERS BACKGROUND CANVAS & HUD GRID
+   ========================================================================== */
+#avengers-bg-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.stark-grid-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  background-image: 
+    linear-gradient(rgba(0, 243, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 243, 255, 0.025) 1px, transparent 1px);
+  background-size: 45px 45px;
+  opacity: 0.65;
+}
+
+.ambient-hero-glow {
+  position: fixed;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  filter: blur(140px);
+  background: var(--theme-glow);
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: 1;
+  transition: all 0.8s ease;
+}
+
+.ambient-hero-glow.top-right {
+  top: -150px;
+  right: -150px;
+}
+
+.ambient-hero-glow.bottom-left {
+  bottom: -150px;
+  left: -150px;
+}
+
+/* Avengers Holographic Watermark */
+.avengers-watermark {
+  position: fixed;
+  right: -5vw;
+  bottom: 5vh;
+  width: 500px;
+  height: 500px;
+  opacity: 0.035;
+  pointer-events: none;
+  z-index: 1;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+/* ==========================================================================
+   NAVIGATION BAR & HUD HEADER
+   ========================================================================== */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  background: rgba(7, 10, 18, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-glow);
+  transition: all var(--transition-fast);
+}
+
+.header-container {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Logo */
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: var(--text-main);
+  cursor: pointer;
+}
+
+.arc-logo-icon {
+  width: 38px;
+  height: 38px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.arc-pulse-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid var(--theme-accent);
+  box-shadow: 0 0 12px var(--theme-glow);
+  animation: arcPulse 2.5s infinite ease-in-out;
+}
+
+.arc-inner-core {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--theme-accent);
+  box-shadow: 0 0 10px var(--theme-accent);
+}
+
+.brand-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-name {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 0.1em;
+}
+
+.brand-badge {
+  font-size: 0.65rem;
+  color: var(--theme-accent);
+  letter-spacing: 0.15em;
+  font-family: var(--font-hud);
+}
+
+/* Nav links */
+.nav-links {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  gap: 0.5rem;
+}
+
+.nav-link {
+  position: relative;
+  padding: 0.5rem 0.85rem;
+  font-family: var(--font-hud);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-decoration: none;
+  border-radius: 6px;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.nav-link i {
+  font-size: 0.75rem;
+  transition: transform var(--transition-fast);
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-glow);
+  box-shadow: 0 0 14px rgba(0, 243, 255, 0.15);
+}
+
+.nav-link.active {
+  color: var(--theme-accent);
+  border-color: var(--border-active);
+}
+
+/* Controls (Theme Switcher, Audio Toggle) */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.control-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-glow);
+  color: var(--text-main);
+  padding: 0.45rem 0.85rem;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-family: var(--font-hud);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  transition: all var(--transition-fast);
+}
+
+.control-btn:hover {
+  border-color: var(--theme-accent);
+  color: var(--theme-accent);
+  box-shadow: 0 0 12px var(--theme-glow);
+}
+
+.control-btn.active {
+  background: rgba(0, 243, 255, 0.12);
+  border-color: var(--theme-accent);
+  color: var(--theme-accent);
+}
+
+/* Hero Theme Picker Dropdown */
+.theme-picker-wrapper {
+  position: relative;
+}
+
+.theme-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: rgba(10, 15, 26, 0.96);
+  border: 1px solid var(--border-glow);
+  border-radius: 10px;
+  padding: 0.6rem;
+  display: none;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 190px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(20px);
+  z-index: 120;
+}
+
+.theme-dropdown.open {
+  display: flex;
+  animation: dropdownFade 0.2s ease;
+}
+
+.theme-option {
+  padding: 0.45rem 0.65rem;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-family: var(--font-hud);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: transparent;
+  border: none;
+  color: var(--text-main);
+  cursor: pointer;
+  text-align: left;
+  transition: background var(--transition-fast);
+}
+
+.theme-option:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.theme-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Mobile Toggle */
+.mobile-nav-toggle {
+  display: none;
+  background: transparent;
+  border: 1px solid var(--border-glow);
+  color: #fff;
+  font-size: 1.2rem;
+  padding: 0.45rem 0.7rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   MAIN CONTENT & SECTION LAYOUTS
+   ========================================================================== */
+main {
+  position: relative;
+  z-index: 10;
+  padding-top: 80px;
+  min-height: calc(100vh - 80px);
+}
+
+.portfolio-section {
+  display: none; /* Controlled via router / script */
+  opacity: 0;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 6rem;
+  transition: opacity 0.45s ease, transform 0.45s ease;
+  transform: translateY(12px);
+}
+
+.portfolio-section.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Section Header Badges */
+.section-header {
+  text-align: center;
+  margin-bottom: 3.5rem;
+  position: relative;
+}
+
+.section-hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 1rem;
+  border-radius: 20px;
+  border: 1px solid var(--border-glow);
+  background: rgba(255, 255, 255, 0.03);
+  font-family: var(--font-hud);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--theme-accent);
+  margin-bottom: 0.85rem;
+  text-transform: uppercase;
+}
+
+.section-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 900;
+  background: var(--theme-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.8rem;
+}
+
+.section-subtitle {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+/* ==========================================================================
+   SECTION 1: HOME (TONY STARK / IRON MAN & JARVIS HUD)
+   ========================================================================== */
+.home-hero-container {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  align-items: center;
+  gap: 3.5rem;
+  min-height: 75vh;
+}
+
+.hero-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 0.95rem;
+  background: rgba(0, 243, 255, 0.08);
+  border: 1px solid rgba(0, 243, 255, 0.3);
+  border-radius: 30px;
+  font-size: 0.78rem;
+  font-family: var(--font-hud);
+  color: var(--arc-cyan);
+  margin-bottom: 1.5rem;
+}
+
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 10px #10b981;
+  animation: blinkDot 1.6s infinite;
+}
+
+.hero-title {
+  font-size: clamp(2.5rem, 5vw, 4.2rem);
+  line-height: 1.1;
+  margin-bottom: 1.2rem;
+}
+
+.hero-title .gradient-text {
+  background: var(--theme-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.typewriter-line {
+  font-family: var(--font-hud);
+  font-size: clamp(1.1rem, 2vw, 1.45rem);
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  min-height: 2.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.typewriter-target {
+  color: var(--theme-accent);
+  font-weight: 700;
+  border-right: 2px solid var(--theme-accent);
+  padding-right: 4px;
+  animation: cursorBlink 0.8s infinite;
+}
+
+.hero-bio {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  max-width: 580px;
+}
+
+.hero-action-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.btn-primary {
+  padding: 0.8rem 1.8rem;
+  font-family: var(--font-hud);
+  font-size: 0.88rem;
+  font-weight: 700;
+  border-radius: 8px;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  transition: all var(--transition-fast);
+  background: var(--theme-gradient);
+  color: #000;
+  border: none;
+  box-shadow: 0 0 20px var(--theme-glow);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 28px var(--theme-glow);
+}
+
+.btn-secondary {
+  padding: 0.8rem 1.8rem;
+  font-family: var(--font-hud);
+  font-size: 0.88rem;
+  font-weight: 700;
+  border-radius: 8px;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  transition: all var(--transition-fast);
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+  border: 1px solid var(--border-glow);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--theme-accent);
+  color: var(--theme-accent);
+  transform: translateY(-2px);
+}
+
+/* Hero HUD Diagnostics Panel */
+.hero-hud-card {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glow);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(14px);
+  overflow: hidden;
+}
+
+.hud-corner-marker {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: var(--theme-accent);
+}
+.hud-corner-marker.tl { top: 8px; left: 8px; border-top: 2px solid; border-left: 2px solid; }
+.hud-corner-marker.tr { top: 8px; right: 8px; border-top: 2px solid; border-right: 2px solid; }
+.hud-corner-marker.bl { bottom: 8px; left: 8px; border-bottom: 2px solid; border-left: 2px solid; }
+.hud-corner-marker.br { bottom: 8px; right: 8px; border-bottom: 2px solid; border-right: 2px solid; }
+
+.reactor-interactive-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem 0;
+  text-align: center;
+}
+
+.arc-reactor-core-large {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  border: 3px solid rgba(0, 243, 255, 0.4);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 0 35px var(--theme-glow), inset 0 0 25px var(--theme-glow);
+  cursor: pointer;
+  transition: transform 0.4s ease;
+}
+
+.arc-reactor-core-large:hover {
+  transform: scale(1.05);
+}
+
+.reactor-blades {
+  position: absolute;
+  inset: 12px;
+  border: 2px dashed var(--theme-accent);
+  border-radius: 50%;
+  animation: spinSlow 12s linear infinite;
+}
+
+.reactor-center-gem {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff 10%, var(--theme-accent) 70%, transparent 100%);
+  box-shadow: 0 0 25px #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #070a12;
+  font-size: 1.4rem;
+}
+
+.hud-specs-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.hud-spec-item {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 0.85rem;
+  text-align: left;
+}
+
+.hud-spec-label {
+  font-size: 0.72rem;
+  font-family: var(--font-hud);
+  color: var(--text-muted);
+  display: block;
+}
+
+.hud-spec-value {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* ==========================================================================
+   SECTION 2: ABOUT ME (CAPTAIN AMERICA & ROOKIE ORIGIN STORY)
+   ========================================================================== */
+.about-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 3.5rem;
+  align-items: center;
+}
+
+.about-shield-frame {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glow);
+  border-radius: 24px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  backdrop-filter: blur(14px);
+}
+
+.shield-graphic-wrap {
+  width: 200px;
+  height: 200px;
+  margin: 0 auto 2rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shield-ring-outer {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 12px solid #dc2626;
+  box-shadow: 0 0 25px rgba(220, 38, 38, 0.4);
+}
+
+.shield-ring-mid {
+  position: absolute;
+  inset: 12px;
+  border-radius: 50%;
+  border: 12px solid #e2e8f0;
+}
+
+.shield-ring-inner {
+  position: absolute;
+  inset: 24px;
+  border-radius: 50%;
+  border: 12px solid #dc2626;
+}
+
+.shield-star-center {
+  position: absolute;
+  inset: 36px;
+  border-radius: 50%;
+  background: #1d4ed8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 2.8rem;
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.6);
+}
+
+.about-quote-box {
+  background: rgba(255, 255, 255, 0.03);
+  border-left: 3px solid var(--theme-accent);
+  padding: 1rem 1.2rem;
+  border-radius: 0 8px 8px 0;
+  font-style: italic;
+  font-size: 0.92rem;
+  color: var(--text-muted);
+}
+
+.about-content-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.origin-badge {
+  font-family: var(--font-hud);
+  font-size: 0.8rem;
+  color: var(--theme-accent);
+  letter-spacing: 0.12em;
+}
+
+.about-lead-text {
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: #fff;
+}
+
+.about-p {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  line-height: 1.75;
+}
+
+.humble-pillars-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+  margin-top: 1rem;
+}
+
+.pillar-item {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 1.2rem;
+  transition: all var(--transition-fast);
+}
+
+.pillar-item:hover {
+  border-color: var(--theme-accent);
+  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.pillar-icon {
+  font-size: 1.4rem;
+  color: var(--theme-accent);
+  margin-bottom: 0.6rem;
+}
+
+.pillar-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.25rem;
+}
+
+.pillar-desc {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+/* ==========================================================================
+   SECTION 3: EDUCATION (DOCTOR STRANGE MYSTIC TIME STONE)
+   ========================================================================== */
+.education-timeline {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+.education-timeline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 30px;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--strange-orange) 0%, var(--strange-green) 50%, transparent 100%);
+  box-shadow: 0 0 10px var(--strange-orange);
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 2.8rem;
+  padding-left: 75px;
+}
+
+.timeline-glyph {
+  position: absolute;
+  top: 0;
+  left: 14px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #0b0f1a;
+  border: 2px solid var(--strange-orange);
+  box-shadow: 0 0 15px var(--strange-orange);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--strange-orange);
+  font-size: 0.85rem;
+  z-index: 2;
+}
+
+.timeline-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(255, 119, 0, 0.25);
+  border-radius: 16px;
+  padding: 1.8rem;
+  backdrop-filter: blur(14px);
+  transition: all var(--transition-fast);
+}
+
+.timeline-card:hover {
+  border-color: var(--strange-orange);
+  transform: translateX(6px);
+  box-shadow: 0 10px 30px rgba(255, 119, 0, 0.15);
+}
+
+.timeline-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+}
+
+.timeline-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+.timeline-badge {
+  font-family: var(--font-hud);
+  font-size: 0.75rem;
+  color: var(--strange-orange);
+  background: rgba(255, 119, 0, 0.12);
+  border: 1px solid rgba(255, 119, 0, 0.3);
+  padding: 0.25rem 0.65rem;
+  border-radius: 6px;
+}
+
+.timeline-sub {
+  font-size: 0.95rem;
+  color: var(--text-accent);
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+}
+
+.timeline-desc {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.coursework-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.course-tag {
+  font-size: 0.75rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.25rem 0.65rem;
+  border-radius: 4px;
+  color: var(--text-main);
+}
+
+/* ==========================================================================
+   SECTION 4: SKILLS (THOR & FORGE OF MJOLNIR / STORMBREAKER)
+   ========================================================================== */
+.skills-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+}
+
+.skill-category-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glow);
+  border-radius: 18px;
+  padding: 2rem;
+  backdrop-filter: blur(14px);
+  position: relative;
+  transition: all var(--transition-fast);
+}
+
+.skill-category-card:hover {
+  border-color: var(--thor-lightning);
+  transform: translateY(-4px);
+  box-shadow: 0 15px 35px rgba(56, 189, 248, 0.15);
+}
+
+.category-header {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 0.9rem;
+}
+
+.cat-icon-wrap {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--thor-lightning);
+  font-size: 1.2rem;
+}
+
+.cat-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.skill-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.skill-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.skill-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+}
+
+.skill-name {
+  font-weight: 600;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.skill-status-tag {
+  font-size: 0.72rem;
+  font-family: var(--font-hud);
+  color: var(--theme-accent);
+}
+
+.skill-bar-outer {
+  height: 7px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.skill-bar-fill {
+  height: 100%;
+  border-radius: 10px;
+  background: var(--theme-gradient);
+  position: relative;
+  transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.skill-chips-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+.skill-chip {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  transition: all var(--transition-fast);
+}
+
+.skill-chip:hover {
+  border-color: var(--thor-lightning);
+  color: var(--thor-lightning);
+  transform: scale(1.05);
+}
+
+/* ==========================================================================
+   SECTION 5: PROJECTS (SPIDER-MAN & STARK TECH LAB)
+   ========================================================================== */
+.projects-filter-bar {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 2.8rem;
+}
+
+.filter-btn {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-glow);
+  color: var(--text-muted);
+  font-family: var(--font-hud);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.5rem 1.1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: var(--spidey-red);
+  color: #fff;
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2rem;
+}
+
+.project-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glow);
+  border-radius: 18px;
+  overflow: hidden;
+  backdrop-filter: blur(14px);
+  display: flex;
+  flex-direction: column;
+  transition: all var(--transition-fast);
+}
+
+.project-card:hover {
+  border-color: var(--theme-accent);
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
+}
+
+.project-preview-head {
+  height: 160px;
+  background: linear-gradient(135deg, #10172a 0%, #1e293b 100%);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.project-badge-type {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  font-family: var(--font-hud);
+  font-size: 0.7rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid var(--theme-accent);
+  color: var(--theme-accent);
+}
+
+.project-illustration-icon {
+  font-size: 3.5rem;
+  color: rgba(255, 255, 255, 0.2);
+  transition: transform 0.4s ease, color 0.4s ease;
+}
+
+.project-card:hover .project-illustration-icon {
+  transform: scale(1.15);
+  color: var(--theme-accent);
+}
+
+.project-body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.project-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.6rem;
+}
+
+.project-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+  margin-bottom: 1.2rem;
+  flex-grow: 1;
+}
+
+.learning-takeaway-box {
+  background: rgba(255, 255, 255, 0.02);
+  border-left: 2px solid var(--theme-accent);
+  padding: 0.6rem 0.8rem;
+  font-size: 0.78rem;
+  color: var(--text-main);
+  border-radius: 0 6px 6px 0;
+  margin-bottom: 1.2rem;
+}
+
+.project-stack-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-bottom: 1.2rem;
+}
+
+.stack-tag {
+  font-size: 0.72rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  color: var(--text-muted);
+}
+
+.project-footer-links {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.project-link-btn {
+  flex: 1;
+  text-align: center;
+  padding: 0.55rem;
+  font-size: 0.8rem;
+  font-family: var(--font-hud);
+  font-weight: 600;
+  border-radius: 6px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.project-link-btn.demo {
+  background: rgba(0, 243, 255, 0.1);
+  border: 1px solid var(--theme-accent);
+  color: var(--theme-accent);
+}
+
+.project-link-btn.demo:hover {
+  background: var(--theme-accent);
+  color: #000;
+}
+
+.project-link-btn.code {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-main);
+}
+
+.project-link-btn.code:hover {
+  border-color: #fff;
+}
+
+/* ==========================================================================
+   SECTION 6: CERTIFICATIONS & ACHIEVEMENTS (BLACK PANTHER & INFINITY STONES)
+   ========================================================================== */
+.infinity-stones-banner {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+}
+
+.infinity-stone-gem {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: #fff;
+  box-shadow: 0 0 18px currentColor;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  position: relative;
+}
+
+.infinity-stone-gem:hover {
+  transform: scale(1.2);
+}
+
+.stone-space { background: #00f3ff; color: #00f3ff; }
+.stone-mind { background: #facc15; color: #facc15; }
+.stone-reality { background: #ef4444; color: #ef4444; }
+.stone-power { background: #a855f7; color: #a855f7; }
+.stone-time { background: #10b981; color: #10b981; }
+.stone-soul { background: #f97316; color: #f97316; }
+
+.infinity-stone-gem i {
+  color: #000;
+}
+
+.achievements-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 2rem;
+}
+
+.achievement-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  border-radius: 18px;
+  padding: 1.8rem;
+  backdrop-filter: blur(14px);
+  position: relative;
+  transition: all var(--transition-fast);
+}
+
+.achievement-card:hover {
+  border-color: var(--panther-violet);
+  transform: translateY(-4px);
+  box-shadow: 0 15px 35px rgba(168, 85, 247, 0.2);
+}
+
+.achieve-badge-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(168, 85, 247, 0.15);
+  border: 1px solid var(--panther-violet);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--panther-violet);
+  font-size: 1.4rem;
+  margin-bottom: 1.2rem;
+}
+
+.achieve-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.35rem;
+}
+
+.achieve-issuer {
+  font-size: 0.85rem;
+  color: var(--panther-glow);
+  font-family: var(--font-hud);
+  margin-bottom: 0.75rem;
+}
+
+.achieve-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 1.2rem;
+}
+
+.achieve-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  font-family: var(--font-hud);
+  padding: 0.25rem 0.65rem;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-main);
+}
+
+/* ==========================================================================
+   SECTION 7: CONTACT (AVENGERS ASSEMBLE TRANSMISSION & QUINJET COMMS)
+   ========================================================================== */
+.contact-container {
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
+  gap: 3.5rem;
+}
+
+.contact-meta-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glow);
+  border-radius: 20px;
+  padding: 2.2rem;
+  backdrop-filter: blur(14px);
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+
+.contact-channels-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.channel-item {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  padding: 1.1rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  transition: all var(--transition-fast);
+}
+
+.channel-item:hover {
+  border-color: var(--theme-accent);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.channel-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: rgba(0, 243, 255, 0.1);
+  border: 1px solid var(--border-glow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--theme-accent);
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.channel-info {
+  flex-grow: 1;
+}
+
+.channel-label {
+  font-size: 0.72rem;
+  font-family: var(--font-hud);
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.channel-value {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+  display: block;
+}
+
+.channel-action-btn {
+  background: transparent;
+  border: 1px solid var(--border-glow);
+  color: var(--text-muted);
+  padding: 0.4rem 0.7rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.channel-action-btn:hover {
+  border-color: var(--theme-accent);
+  color: var(--theme-accent);
+}
+
+/* Contact Form */
+.transmission-form-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glow);
+  border-radius: 20px;
+  padding: 2.2rem;
+  backdrop-filter: blur(14px);
+}
+
+.form-group {
+  margin-bottom: 1.4rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.78rem;
+  font-family: var(--font-hud);
+  color: var(--text-muted);
+  margin-bottom: 0.45rem;
+  letter-spacing: 0.05em;
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  background: rgba(8, 12, 22, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  transition: all var(--transition-fast);
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--theme-accent);
+  box-shadow: 0 0 15px var(--theme-glow);
+}
+
+.form-textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* ==========================================================================
+   FULLSCREEN AVENGERS TRANSITION PORTAL ENGINE
+   ========================================================================== */
+#avengers-transition-portal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s ease;
+}
+
+#avengers-transition-portal.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+}
+
+/* 1. Iron Man Repulsor Flash Transition */
+.fx-ironman-layer {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle, rgba(255, 183, 3, 0.95) 0%, rgba(255, 51, 68, 0.9) 50%, #070a12 100%);
+}
+
+.active-ironman .fx-ironman-layer {
+  display: flex;
+  animation: ironmanRepulsorAnim 0.75s forwards;
+}
+
+@keyframes ironmanRepulsorAnim {
+  0% { transform: scale(0.1); opacity: 0; }
+  35% { transform: scale(1.3); opacity: 1; }
+  75% { transform: scale(1.8); opacity: 0.95; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+/* 2. Captain America Vibranium Shield Ripple */
+.fx-cap-layer {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(7, 10, 18, 0.88);
+}
+
+.active-cap .fx-cap-layer {
+  display: flex;
+  animation: capShieldAnim 0.8s forwards;
+}
+
+.cap-shield-spin {
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  border: 16px solid #dc2626;
+  position: relative;
+  box-shadow: 0 0 50px #2563eb;
+}
+
+@keyframes capShieldAnim {
+  0% { transform: rotate(0deg) scale(0.2); opacity: 0; }
+  50% { transform: rotate(360deg) scale(1.2); opacity: 1; }
+  100% { transform: rotate(720deg) scale(3.5); opacity: 0; }
+}
+
+/* 3. Doctor Strange Mystic Portal Sparks */
+.fx-strange-layer {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(7, 10, 18, 0.9);
+}
+
+.active-strange .fx-strange-layer {
+  display: flex;
+  animation: strangePortalAnim 0.85s forwards;
+}
+
+.mystic-portal-ring {
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  border: 8px dashed #ff7700;
+  box-shadow: 0 0 60px #ff7700, inset 0 0 40px #f59e0b;
+}
+
+@keyframes strangePortalAnim {
+  0% { transform: rotate(0deg) scale(0.1); opacity: 0; }
+  50% { transform: rotate(180deg) scale(1.4); opacity: 1; }
+  100% { transform: rotate(360deg) scale(3.2); opacity: 0; }
+}
+
+/* 4. Thor Thunder & Lightning Flash */
+.fx-thor-layer {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: #38bdf8;
+}
+
+.active-thor .fx-thor-layer {
+  display: flex;
+  animation: thorLightningFlash 0.7s forwards;
+}
+
+@keyframes thorLightningFlash {
+  0% { opacity: 0; }
+  15% { opacity: 0.95; background: #fff; }
+  30% { opacity: 0.2; }
+  50% { opacity: 0.85; background: #38bdf8; }
+  75% { opacity: 0.3; }
+  100% { opacity: 0; }
+}
+
+/* 5. Spider-Man Web Pull Transition */
+.fx-spiderman-layer {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(7, 10, 18, 0.85);
+}
+
+.active-spiderman .fx-spiderman-layer {
+  display: flex;
+  animation: spidermanWebAnim 0.75s forwards;
+}
+
+@keyframes spidermanWebAnim {
+  0% { transform: scale(0.3); opacity: 0; }
+  40% { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(2.8); opacity: 0; }
+}
+
+/* 6. Black Panther Vibranium Kinetic Wave */
+.fx-panther-layer {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(168, 85, 247, 0.85);
+}
+
+.active-panther .fx-panther-layer {
+  display: flex;
+  animation: pantherWaveAnim 0.75s forwards;
+}
+
+@keyframes pantherWaveAnim {
+  0% { transform: scale(0.1); opacity: 0; }
+  50% { transform: scale(1.3); opacity: 0.95; }
+  100% { transform: scale(3.2); opacity: 0; }
+}
+
+/* 7. Avengers Holographic Beacon */
+.fx-avengers-layer {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 243, 255, 0.75);
+}
+
+.active-avengers .fx-avengers-layer {
+  display: flex;
+  animation: avengersBeaconAnim 0.75s forwards;
+}
+
+@keyframes avengersBeaconAnim {
+  0% { transform: scale(0.2); opacity: 0; }
+  45% { transform: scale(1.2); opacity: 0.9; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+/* Transition Text Indicator */
+.portal-hero-title {
+  position: absolute;
+  font-family: var(--font-hud);
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 0.2em;
+  text-shadow: 0 0 30px currentColor;
+  text-transform: uppercase;
+}
+
+/* ==========================================================================
+   FLOATING AVENGERS HERO DOCK (QUICK JUMP BAR)
+   ========================================================================== */
+.floating-hero-dock {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 90;
+  background: rgba(10, 15, 26, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-glow);
+  border-radius: 40px;
+  padding: 0.4rem 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+.dock-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  position: relative;
+}
+
+.dock-btn:hover,
+.dock-btn.active {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 12px var(--theme-glow);
+}
+
+.dock-btn.active {
+  color: var(--theme-accent);
+}
+
+/* Tooltip */
+.dock-btn::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #080c16;
+  border: 1px solid var(--border-glow);
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-family: var(--font-hud);
+  color: #fff;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.dock-btn:hover::after {
+  opacity: 1;
+}
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+.site-footer {
+  position: relative;
+  z-index: 10;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(6, 9, 16, 0.95);
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.footer-social-links {
+  display: flex;
+  gap: 1.2rem;
+}
+
+.social-link {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-glow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.social-link:hover {
+  color: var(--theme-accent);
+  border-color: var(--theme-accent);
+  transform: translateY(-3px);
+  box-shadow: 0 0 15px var(--theme-glow);
+}
+
+.footer-copy {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.footer-disclaimer {
+  font-size: 0.75rem;
+  color: #64748b;
+  max-width: 600px;
+}
+
+/* ==========================================================================
+   MODAL / POPUP (For Project Demos & Easter Eggs)
+   ========================================================================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.modal-overlay.open {
+  display: flex;
+}
+
+.modal-box {
+  background: #0d1424;
+  border: 1px solid var(--theme-accent);
+  box-shadow: 0 0 35px var(--theme-glow);
+  border-radius: 16px;
+  max-width: 650px;
+  width: 100%;
+  padding: 2rem;
+  position: relative;
+  animation: modalEnter 0.3s ease;
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1.2rem;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+.modal-close-btn:hover { color: #fff; }
+
+@keyframes modalEnter {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* ==========================================================================
+   KEYFRAME ANIMATIONS
+   ========================================================================== */
+@keyframes arcPulse {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.12); opacity: 0.4; }
+}
+
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes blinkDot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+@keyframes cursorBlink {
+  0%, 100% { border-color: transparent; }
+  50% { border-color: var(--theme-accent); }
+}
+
+@keyframes dropdownFade {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (TABLET & MOBILE)
+   ========================================================================== */
+@media (max-width: 992px) {
+  .home-hero-container {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  
+  .hero-bio {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-action-group {
+    justify-content: center;
+  }
+
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background: rgba(7, 10, 18, 0.98);
+    flex-direction: column;
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border-glow);
+    display: none;
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .mobile-nav-toggle {
+    display: block;
+  }
+
+  .floating-hero-dock {
+    display: none; /* Hide floating dock on small mobile screens to keep view clean */
+  }
+
+  .section-title {
+    font-size: 2.1rem;
+  }
+}
